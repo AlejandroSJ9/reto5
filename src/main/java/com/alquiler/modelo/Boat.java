@@ -18,7 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "boat")
+@Table(name = "boats")
 public class Boat implements Serializable{
     
     @Id
@@ -35,11 +35,11 @@ public class Boat implements Serializable{
     private Categoria category;
 
      @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "boat")
-    @JsonIgnoreProperties({"boat", "client"})
+    @JsonIgnoreProperties({"boats", "client"})
     private List<Mensaje> messages;
 
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "boat")
-    @JsonIgnoreProperties({"boat", "client"})
+    @JsonIgnoreProperties({"boats", "client"})
     private List<Reservaciones> reservations;
 
     public Integer getId() {
