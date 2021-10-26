@@ -49,11 +49,11 @@ public class Categoria implements Serializable {
         this.description = description;
     }
 
-    public List<Boat> getBoat() {
+    public List<Boat> getBoats() {
         return boats;
     }
 
-    public void setBoat(List<Boat> boat) {
+    public void setBoats(List<Boat> boat) {
         this.boats = boat;
     }
 
