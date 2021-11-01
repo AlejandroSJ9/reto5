@@ -4,8 +4,14 @@
  */
 package com.alquiler.servicio;
 
+import com.alquiler.modelCustom.ContadorClientes;
+import com.alquiler.modelCustom.StatusReservas;
 import com.alquiler.repositorio.RepositorioReservaciones;
 import com.alquiler.modelo.Reservaciones;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiciosReservaciones {
-     @Autowired
+    @Autowired
     private RepositorioReservaciones metodosCrud;
 
     public List<Reservaciones> getAll(){
@@ -72,4 +78,35 @@ public class ServiciosReservaciones {
         }).orElse(false);
         return aBoolean;
     }
+    
+    public StatusReservas reporteStatusServicio (){
+        List<Reservaciones>completed= metodosCrud.ReservacionesStatusRepositorio("completed");
+        List<Reservaciones>cancelled= metodosCrud.ReservacionesStatusRepositorio("cancelled");
+        
+        return new StatusReservas(completed.size(), cancelled.size() );
+    }
+    
+    public List<Reservaciones> reporteTiempoServicio (String datoA, String datoB){
+        SimpleDateFormat parser = new SimpleDateFormat ("yyyy-MM-dd");
+        
+        Date datoUno = new Date();
+        Date datoDos = new Date();
+        
+        try{
+             datoUno = parser.parse(datoA);
+             datoDos = parser.parse(datoB);
+        }catch(ParseException evt){
+            evt.printStackTrace();
+        }if(datoUno.before(datoDos)){
+            return metodosCrud.ReservacionesTiempoRepositorio(datoUno, datoDos);
+        }else{
+            return new ArrayList<>();
+        
+        } 
+    }
+    
+    public List<ContadorClientes> reporteClientesServicio(){
+            return metodosCrud.getClientesRepositorio();
+        }
+
 }
